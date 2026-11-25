@@ -1,0 +1,121 @@
+product_id,product_name,category,sub_category,unit_price,unit_cost
+1,Mobiles Electronics 01,Electronics,Mobiles,5079.0,4287.65
+2,Laptops Electronics 02,Electronics,Laptops,6849.0,5929.43
+3,Audio Electronics 03,Electronics,Audio,26199.0,20832.82
+4,Accessories Electronics 04,Electronics,Accessories,1989.0,1628.62
+5,Wearables Electronics 05,Electronics,Wearables,5859.0,4603.19
+6,Mobiles Electronics 06,Electronics,Mobiles,7109.0,5835.69
+7,Laptops Electronics 07,Electronics,Laptops,25829.0,22141.35
+8,Audio Electronics 08,Electronics,Audio,3309.0,2646.22
+9,Accessories Electronics 09,Electronics,Accessories,64899.0,54138.01
+10,Wearables Electronics 10,Electronics,Wearables,79289.0,62135.5
+11,Mobiles Electronics 11,Electronics,Mobiles,38939.0,33867.78
+12,Laptops Electronics 12,Electronics,Laptops,4939.0,4257.42
+13,Audio Electronics 13,Electronics,Audio,21019.0,17497.08
+14,Accessories Electronics 14,Electronics,Accessories,2089.0,1776.86
+15,Wearables Electronics 15,Electronics,Wearables,47949.0,37898.49
+16,Mobiles Electronics 16,Electronics,Mobiles,11669.0,10088.09
+17,Laptops Electronics 17,Electronics,Laptops,3029.0,2579.27
+18,Audio Electronics 18,Electronics,Audio,5509.0,4363.11
+19,Accessories Electronics 19,Electronics,Accessories,36219.0,31802.78
+20,Wearables Electronics 20,Electronics,Wearables,47749.0,37351.8
+21,Mobiles Electronics 21,Electronics,Mobiles,11849.0,9986.94
+22,Laptops Electronics 22,Electronics,Laptops,10129.0,8074.59
+23,Audio Electronics 23,Electronics,Audio,29689.0,25292.82
+24,Accessories Electronics 24,Electronics,Accessories,40079.0,31543.8
+25,Wearables Electronics 25,Electronics,Wearables,31399.0,24745.87
+26,Mobiles Electronics 26,Electronics,Mobiles,6919.0,5719.45
+27,Sofas Furniture 01,Furniture,Sofas,39289.0,25816.84
+28,Beds Furniture 02,Furniture,Beds,4579.0,2956.28
+29,Tables Furniture 03,Furniture,Tables,12529.0,9038.79
+30,Chairs Furniture 04,Furniture,Chairs,9459.0,6995.48
+31,Storage Furniture 05,Furniture,Storage,24929.0,17317.3
+32,Sofas Furniture 06,Furniture,Sofas,4749.0,3293.64
+33,Beds Furniture 07,Furniture,Beds,10539.0,6939.94
+34,Tables Furniture 08,Furniture,Tables,34499.0,20764.0
+35,Chairs Furniture 09,Furniture,Chairs,5419.0,3392.79
+36,Storage Furniture 10,Furniture,Storage,7459.0,4640.36
+37,Sofas Furniture 11,Furniture,Sofas,28669.0,17699.73
+38,Beds Furniture 12,Furniture,Beds,5419.0,3783.04
+39,Men Clothing 01,Clothing,Men,699.0,337.89
+40,Women Clothing 02,Clothing,Women,619.0,279.75
+41,Kids Clothing 03,Clothing,Kids,1289.0,678.62
+42,Footwear Clothing 04,Clothing,Footwear,929.0,540.09
+43,Winter Wear Clothing 05,Clothing,Winter Wear,719.0,389.29
+44,Men Clothing 06,Clothing,Men,719.0,377.5
+45,Women Clothing 07,Clothing,Women,949.0,558.86
+46,Kids Clothing 08,Clothing,Kids,1899.0,903.61
+47,Footwear Clothing 09,Clothing,Footwear,3289.0,1516.86
+48,Winter Wear Clothing 10,Clothing,Winter Wear,4159.0,2443.81
+49,Men Clothing 11,Clothing,Men,3239.0,1896.17
+50,Women Clothing 12,Clothing,Women,2379.0,1314.27
+51,Kids Clothing 13,Clothing,Kids,4769.0,2322.01
+52,Footwear Clothing 14,Clothing,Footwear,1819.0,1083.15
+53,Winter Wear Clothing 15,Clothing,Winter Wear,2409.0,1360.61
+54,Men Clothing 16,Clothing,Men,1389.0,765.46
+55,Women Clothing 17,Clothing,Women,1129.0,545.8
+56,Kids Clothing 18,Clothing,Kids,1139.0,600.21
+57,Footwear Clothing 19,Clothing,Footwear,719.0,412.26
+58,Winter Wear Clothing 20,Clothing,Winter Wear,3619.0,2095.54
+59,Men Clothing 21,Clothing,Men,569.0,303.97
+60,Women Clothing 22,Clothing,Women,2669.0,1410.35
+61,Kids Clothing 23,Clothing,Kids,4279.0,2373.36
+62,Footwear Clothing 24,Clothing,Footwear,1719.0,909.76
+63,Winter Wear Clothing 25,Clothing,Winter Wear,599.0,307.08
+64,Men Clothing 26,Clothing,Men,1449.0,670.62
+65,Women Clothing 27,Clothing,Women,1169.0,548.15
+66,Kids Clothing 28,Clothing,Kids,5789.0,3265.24
+67,Footwear Clothing 29,Clothing,Footwear,2789.0,1265.37
+68,Winter Wear Clothing 30,Clothing,Winter Wear,2999.0,1373.08
+69,Men Clothing 31,Clothing,Men,1799.0,1053.67
+70,Women Clothing 32,Clothing,Women,2909.0,1616.24
+71,Kids Clothing 33,Clothing,Kids,3009.0,1355.95
+72,Footwear Clothing 34,Clothing,Footwear,589.0,292.62
+73,Cookware Home 01,Home & Kitchen,Cookware,5369.0,3718.56
+74,Appliances Home 02,Home & Kitchen,Appliances,1659.0,1150.46
+75,Decor Home 03,Home & Kitchen,Decor,1969.0,1164.51
+76,Bedding Home 04,Home & Kitchen,Bedding,1899.0,1223.42
+77,Cleaning Home 05,Home & Kitchen,Cleaning,799.0,463.65
+78,Cookware Home 06,Home & Kitchen,Cookware,4649.0,2938.73
+79,Appliances Home 07,Home & Kitchen,Appliances,569.0,378.74
+80,Decor Home 08,Home & Kitchen,Decor,2249.0,1554.0
+81,Bedding Home 09,Home & Kitchen,Bedding,709.0,426.03
+82,Cleaning Home 10,Home & Kitchen,Cleaning,469.0,306.74
+83,Cookware Home 11,Home & Kitchen,Cookware,649.0,426.69
+84,Appliances Home 12,Home & Kitchen,Appliances,7689.0,4484.01
+85,Decor Home 13,Home & Kitchen,Decor,729.0,469.73
+86,Bedding Home 14,Home & Kitchen,Bedding,1029.0,667.11
+87,Cleaning Home 15,Home & Kitchen,Cleaning,639.0,424.69
+88,Cookware Home 16,Home & Kitchen,Cookware,4879.0,3415.26
+89,Appliances Home 17,Home & Kitchen,Appliances,1819.0,1011.43
+90,Decor Home 18,Home & Kitchen,Decor,9909.0,5750.65
+91,Bedding Home 19,Home & Kitchen,Bedding,3829.0,2189.28
+92,Cleaning Home 20,Home & Kitchen,Cleaning,2439.0,1397.95
+93,Cookware Home 21,Home & Kitchen,Cookware,3729.0,2305.03
+94,Appliances Home 22,Home & Kitchen,Appliances,459.0,312.94
+95,Fitness Sports 01,Sports,Fitness,2539.0,1599.5
+96,Cricket Sports 02,Sports,Cricket,5159.0,3199.43
+97,Cycling Sports 03,Sports,Cycling,2019.0,1370.51
+98,Yoga Sports 04,Sports,Yoga,1679.0,1040.04
+99,Outdoor Sports 05,Sports,Outdoor,8799.0,5386.41
+100,Fitness Sports 06,Sports,Fitness,4949.0,2798.94
+101,Cricket Sports 07,Sports,Cricket,1859.0,1123.53
+102,Cycling Sports 08,Sports,Cycling,11379.0,6936.15
+103,Yoga Sports 09,Sports,Yoga,2989.0,1724.93
+104,Outdoor Sports 10,Sports,Outdoor,1099.0,701.35
+105,Fitness Sports 11,Sports,Fitness,2839.0,1622.71
+106,Cricket Sports 12,Sports,Cricket,5259.0,3068.91
+107,Cycling Sports 13,Sports,Cycling,1959.0,1242.33
+108,Yoga Sports 14,Sports,Yoga,9069.0,5353.86
+109,Skincare Beauty 01,Beauty,Skincare,1359.0,655.04
+110,Haircare Beauty 02,Beauty,Haircare,1579.0,742.16
+111,Makeup Beauty 03,Beauty,Makeup,489.0,201.94
+112,Fragrance Beauty 04,Beauty,Fragrance,259.0,96.59
+113,Grooming Beauty 05,Beauty,Grooming,869.0,324.47
+114,Skincare Beauty 06,Beauty,Skincare,259.0,126.46
+115,Haircare Beauty 07,Beauty,Haircare,939.0,361.57
+116,Makeup Beauty 08,Beauty,Makeup,1759.0,846.29
+117,Fragrance Beauty 09,Beauty,Fragrance,1279.0,544.21
+118,Grooming Beauty 10,Beauty,Grooming,769.0,322.41
+119,Skincare Beauty 11,Beauty,Skincare,3399.0,1505.51
+120,Haircare Beauty 12,Beauty,Haircare,269.0,102.83

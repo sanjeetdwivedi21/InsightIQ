@@ -1,4 +1,3 @@
--- database/schema.sql
 PRAGMA foreign_keys = ON;
 
 CREATE TABLE customers (
@@ -56,3 +55,30 @@ CREATE INDEX idx_items_product      ON order_items(product_id);
 CREATE INDEX idx_payments_order     ON payments(order_id);
 CREATE INDEX idx_products_category  ON products(category);
 CREATE INDEX idx_customers_region   ON customers(region);
+
+-- One shared definition of "sales": Completed orders only, discount applied.
+CREATE VIEW vw_sales AS
+SELECT
+    oi.order_item_id,
+    o.order_id,
+    o.order_date,
+    strftime('%Y-%m', o.order_date)                    AS order_month,
+    o.region                                           AS order_region,
+    o.customer_id,
+    c.segment,
+    p.product_id,
+    p.product_name,
+    p.category,
+    p.sub_category,
+    oi.quantity,
+    oi.unit_price,
+    oi.discount_pct,
+    oi.quantity * oi.unit_price * (1 - oi.discount_pct) AS revenue,
+    oi.quantity * oi.unit_cost                          AS cost,
+    oi.quantity * oi.unit_price * (1 - oi.discount_pct)
+      - oi.quantity * oi.unit_cost                      AS profit
+FROM order_items oi
+JOIN orders    o ON o.order_id    = oi.order_id
+JOIN customers c ON c.customer_id = o.customer_id
+JOIN products  p ON p.product_id  = oi.product_id
+WHERE o.status = 'Completed';
