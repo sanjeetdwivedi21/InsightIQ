@@ -4,8 +4,8 @@ Ask business questions in plain English and get back SQL, analysis, charts, insi
 
 InsightIQ is a portfolio project that mimics what a business analyst does every day: write SQL, analyse the results, build charts and explain what the numbers mean. Non-technical users should be able to ask *"Why did revenue decrease in March?"* and get an answer that is backed by real data.
 
-> **Project status: in development (Phase 2 of 9 complete).**
-> The data layer is finished and tested. The AI, analytics, visualization and dashboard layers are planned and are being built phase by phase. Sections below clearly mark what is **done** and what is **planned**.
+> **Project status: in development (Phase 4 of 9 complete).**
+> The data layer, the natural-language-to-SQL engine and the analytics engine are finished and tested. The visualization, insight and dashboard layers are planned and are being built phase by phase. Sections below clearly mark what is **done** and what is **planned**.
 
 ---
 
@@ -15,8 +15,8 @@ InsightIQ is a portfolio project that mimics what a business analyst does every 
 |---|---|---|
 | 1 | System architecture and project setup | Done |
 | 2 | Synthetic dataset and SQLite database | Done (18/18 data-quality checks, 10/10 tests pass) |
-| 3 | Natural language to SQL engine and SQL validator | Planned |
-| 4 | Python business analytics engine (incl. revenue-drop investigation) | Planned |
+| 3 | Natural language to SQL engine and SQL validator | Done (30/30 tests pass; 19-question live benchmark below) |
+| 4 | Python business analytics engine (incl. revenue-drop investigation) | Done (25 tests pass) |
 | 5 | Automated Plotly visualization engine | Planned |
 | 6 | AI business insight generator | Planned |
 | 7 | Streamlit dashboard (5 pages) | Planned |
@@ -50,7 +50,7 @@ Question (Streamlit)
 |---|---|
 | Language and data | Python, SQL, Pandas, NumPy |
 | Database | SQLite (schema is PostgreSQL-compatible) via SQLAlchemy |
-| AI (planned) | Configurable LLM provider (Anthropic Claude by default; OpenAI and NVIDIA NIM planned), LangChain |
+| AI | Configurable LLM provider: NVIDIA NIM (tested live); Anthropic and OpenAI adapters are included but not yet tested live |
 | Frontend (planned) | Streamlit |
 | Visualization (planned) | Plotly |
 | Reports (planned) | ReportLab |
@@ -106,6 +106,45 @@ The view `vw_sales` defines sales once, and everything else should query it:
 
 `database/validate_data.py` runs 18 checks (row counts, foreign keys, date range, statuses, cost below price, payment amount equals order total, no orders before signup, no duplicate emails, and more). `tests/test_database.py` adds 10 tests covering quality checks, read-only enforcement, reproducibility, cleaning, the revenue formula and the planted scenarios.
 
+### 6. Natural-language-to-SQL engine
+
+```
+Question -> LLM -> SQL -> validator -> read-only executor -> result
+                              ^              |
+                              +-- one repair attempt on a fixable SQL error
+```
+
+- **SQL validator:** allows exactly one `SELECT` / `WITH ... SELECT`; blocks write, schema and admin keywords, SQLite internals, unknown tables, schema-qualified names and dangerous functions. Comments are stripped first, and keywords inside string literals are not mistaken for commands.
+- **Executor:** read-only connection, query timeout (10 s) and row limit (1,000). It re-validates every query itself.
+- **Schema-aware prompts:** the live schema, the exact category/region/status values and the business definitions are given to the model. The model's reply is parsed for SQL only; its reasoning text is ignored.
+- **Repair loop:** a fixable error is sent back to the model once. Forbidden operations are rejected immediately and never sent back for "fixing".
+- **Follow-up support:** prior question and SQL pairs can be passed as conversation history (the UI part comes in Phase 7).
+
+**Benchmark (author-written, 2026-11-26):** 19 questions, each with a hand-written reference query; the model's result must contain the reference result (labels and numbers, ignoring column names, order and extra columns).
+
+| Model | Data questions correct | First attempt | Safety questions handled |
+|---|---|---|---|
+| `nvidia/nemotron-3.5-super-vl-120b-a12b` | 17 / 17 | 17 / 17 | 2 / 2 |
+
+The two safety questions are an unrelated question (weather) and a destructive request ("delete all orders"). **Limits of this benchmark:** it is small, the questions are fairly direct, and the author wrote both the questions and the reference answers, so treat it as a regression check and not as proof of general accuracy. Harder, ambiguous and follow-up questions will be added.
+
+Additional checks: the validator was fuzzed with 60,000 random SQL strings and the accepted ones were executed against the read-only database without any change to the data. This shows no bug was found, not that none exists.
+
+### 7. Business analytics engine
+
+Pandas/NumPy functions that take DataFrames and return structured results (no UI, no LLM), so every number is reproducible and testable.
+
+- **Revenue and profit:** monthly trend with month-over-month and year-over-year change, growth/decline summary, volatility.
+- **Categories, products, regions, segments:** performance tables, shares, and "what changed between two months" tables whose changes add up exactly to the net change.
+- **Customers:** top customers, revenue concentration, repeat rate, time between orders, new/lost/reduced/increased buckets, and a high-value-customer check.
+- **Order volume vs average order value:** an exact arithmetic split of a revenue change.
+
+**Automated revenue-change investigation** (`python -m src.analytics.revenue_drop --month 2025-03`) answers questions like *"Why did revenue decrease in March?"*. The output separates **facts** (computed from the data), **hypotheses** (possible reasons, marked as not confirmed) and **limitations**. For March 2025 versus February 2025 it finds: revenue down 8.8%; Electronics down 23.7% (about 91% of all category decreases) after four consecutive monthly declines; average order value down 7.5%; and high-value customers spending well below their usual level. It also reports that the overall change is within normal month-to-month variation, and it makes no causal claims.
+
+Two safeguards against misleading conclusions: comparisons for high-value customers are calibrated against earlier months (top customers buy in lumps, so a naive comparison would overstate a drop), and the report states when a change is within normal variation.
+
+Testing: 25 tests use hand-calculable toy data for exact formulas and the real database for reconciliation with plain SQL. The tests were also checked by deliberately injecting bugs into the code to confirm they fail.
+
 ---
 
 ## Getting started
@@ -140,7 +179,21 @@ pip install -r requirements.txt
 cp .env.example .env        # Windows: copy .env.example .env
 ```
 
-An API key is not needed yet. It will be required from Phase 3, when the LLM is integrated. Keep it only in `.env`, which is git-ignored.
+Edit `.env` and set your provider, model and key (keep the key only in `.env`, which is git-ignored):
+
+```text
+LLM_PROVIDER=nvidia
+LLM_MODEL=nvidia/nemotron-3.5-super-vl-120b-a12b
+NVIDIA_API_KEY=your-key-here
+```
+
+Check the connection:
+
+```bash
+python -m src.ai.llm_client
+```
+
+Model IDs change over time. If you get a 404 or 410 error, pick a current model ID from the provider's catalog.
 
 ### Build the database
 
@@ -162,6 +215,14 @@ python -m pytest tests/test_database.py -v
 
 Expected: `10 passed`. Use `python -m pytest`, not plain `pytest`, so the project modules are found.
 
+```bash
+python -m pytest tests/test_sql.py -v     # offline: validator, executor, engine (30 tests)
+python -m tests.live_eval                 # live benchmark against your configured model
+python -m tests.live_eval --model <id>    # compare another model
+python -m pytest tests/test_analytics.py -v                  # analytics engine (25 tests)
+python -m src.analytics.revenue_drop --month 2025-03         # explain a month's revenue change
+```
+
 ---
 
 ## Project structure
@@ -181,40 +242,49 @@ InsightIQ/
 │   ├── setup_database.py       # clean, load, validate
 │   ├── validate_data.py        # data-quality checks and scenario report
 │   └── connection.py           # read-only and write connections
-├── src/                        # (planned) ai, analytics, sql, visualization, reports, services
+├── src/
+│   ├── models.py               # result containers
+│   ├── ai/                     # llm_client, prompts, sql_generator
+│   ├── sql/                    # sql_validator, query_executor, schema_provider
+│   ├── services/nl2sql.py      # question -> SQL -> result pipeline
+│   ├── analytics/              # revenue, product, customer analysis; revenue_drop investigation
+│   └── visualization/ reports/ # (planned)
 ├── pages/                      # (planned) Streamlit pages
 └── tests/
-    └── test_database.py
+    ├── test_database.py
+    ├── test_sql.py
+    ├── test_analytics.py
+    └── live_eval.py            # benchmark with reference queries
 ```
 
 Folders under `src/` and `pages/` exist as placeholders and are filled in as later phases are completed.
 
 ---
 
-## LLM configuration (planned for Phase 3)
+## LLM configuration
 
-The provider is chosen in `.env`, so switching models should not require code changes elsewhere.
+The provider is chosen in `.env`, so switching models does not require code changes elsewhere. All LLM calls go through one small client (`src/ai/llm_client.py`) with retries on rate limits and clear error messages.
 
 ```text
-LLM_PROVIDER=anthropic     # anthropic | openai | nvidia (nvidia to be added)
+LLM_PROVIDER=nvidia        # nvidia | anthropic | openai
 LLM_MODEL=<model id>
 ```
 
-NVIDIA NIM exposes an OpenAI-compatible endpoint, so it will be added as another provider option.
+NVIDIA NIM uses an OpenAI-compatible endpoint. The Anthropic and OpenAI paths are implemented but have only been tested with a simulated client so far.
 
 ## Security design
 
-Implemented now:
+Implemented and tested:
 
 - Read-only database connection for all queries.
-- Secrets live in `.env`, which is git-ignored.
+- SQL validator: a single `SELECT` only; write, DDL and admin statements rejected.
+- Query timeout and row limit.
+- The LLM only produces SQL text; nothing it returns is executed as code.
+- Secrets live in `.env`, which is git-ignored; keys are held as secret values and are not printed.
 
-Planned for Phase 3 and 9:
+Planned for Phase 9:
 
-- SQL validator: a single `SELECT` only, with write and DDL statements rejected.
-- Query timeout and row limits.
-- No execution of LLM-generated code.
-- API keys never written to logs.
+- Full security review, dependency audit and logging review.
 
 Nothing in the planned list should be treated as verified until it has been implemented and tested.
 
